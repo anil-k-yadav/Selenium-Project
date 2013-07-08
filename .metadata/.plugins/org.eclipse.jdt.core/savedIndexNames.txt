@@ -1,9 +1,0 @@
-INDEX VERSION 1.126+E:\Blueline\Testing\Test Automation\BlueLine\.metadata\.plugins\org.eclipse.jdt.core
-2834109852.index
-3792661002.index
-207589165.index
-3050462159.index
-939185698.index
-567644192.index
-2233678615.index
-1160340673.index

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;VOC_Selenium_Framework&apos; to &apos;BlueLine_Selenium_Framework&apos;" description="Rename resource &apos;VOC_Selenium_Framework&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/VOC_Selenium_Framework" name="BlueLine_Selenium_Framework" stamp="1372249519040" updateReferences="true"/>
-</session>
