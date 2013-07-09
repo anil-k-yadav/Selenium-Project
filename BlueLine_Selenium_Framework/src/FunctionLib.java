@@ -12,7 +12,6 @@ public class FunctionLib {
 	 */
 	public void login()
 	{
-	
 		Lib lib=new Lib();
 		String Browser=lib.getProperty("Browser");
 		String UserName =lib.getProperty("UserName");
