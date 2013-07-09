@@ -43,13 +43,11 @@ public class DriverScript {
 			iSuitRowCount=shSuitSheet.getRows();
 			for (int suitRowCounter=1;suitRowCounter<iSuitRowCount;suitRowCounter++)
 			{
-				//Cell a2 = sheet.getCell(1,i); 
 				Cell cTestCaseName = shSuitSheet.getCell(ScriptConstants.SUIT_TESTCASE_COL_NUM,suitRowCounter);
 				sTestCaseName = cTestCaseName.getContents();
 
 				Cell cExecuteStatus = shSuitSheet.getCell(ScriptConstants.SUIT_EXECUTIONSTATUS_COL_NUM,suitRowCounter); 
 				sExecuteStatus = cExecuteStatus.getContents();
-				//System.out.println(sExecuteStatus.trim());
 				if(sExecuteStatus.equalsIgnoreCase("Yes"))
 				{
 					oLib.setProperty("TestCaseName", sTestCaseName);
@@ -125,7 +123,6 @@ public class DriverScript {
 		{
 			e.printStackTrace();
 			Lib.driver.quit();
-		}	
-		//Lib.driver.quit();
+		}
 	}
 }
