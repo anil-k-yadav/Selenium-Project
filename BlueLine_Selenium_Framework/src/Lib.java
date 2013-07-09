@@ -120,6 +120,9 @@ public class Lib
 		repoter(opvar, "NA", "NA", ret_mess);
 	}
 
+	/**
+	 * This method is used to close web browser opened by Selenium webdriver
+	 */
 	public void Method_WebBrowserClose()
 	{
 		String ret_mess;
@@ -280,7 +283,6 @@ public class Lib
 	 * @param sData
 	 * @return
 	 */
-
 	public boolean Method_verifyText (String objlogicalname,String sData){
 		boolean bStatus = false;
 		String opvar="FAIL";
