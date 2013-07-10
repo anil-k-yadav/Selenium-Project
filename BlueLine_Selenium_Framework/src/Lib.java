@@ -30,8 +30,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.activation.*;
 
-//import java.sql.*;
-
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -76,7 +74,7 @@ public class Lib
 		{
 			if(browser.equalsIgnoreCase("INTERNET EXPLORER"))
 			{
-				System.setProperty("webdriver.ie.driver", Method_GetProjectLocation()+"\\JARs\\IEDriverServer.exe");
+				System.setProperty("webdriver.ie.driver", Method_GetProjectLocation() + File.separator + "JARs" + File.separator + "IEDriverServer.exe");
 				driver = new InternetExplorerDriver();
 			}
 			else if(browser.equalsIgnoreCase("MOZILLA FIREFOX"))
@@ -90,7 +88,7 @@ public class Lib
 
 			else if(browser.equalsIgnoreCase("CHROME"))
 			{
-				System.setProperty("webdriver.chrome.driver", Method_GetProjectLocation()+"\\JARs\\chromedriver.exe");
+				System.setProperty("webdriver.chrome.driver", Method_GetProjectLocation()+ File.separator + "JARs" + File.separator + "chromedriver.exe");
 				driver = new ChromeDriver();
 			}
 			else if(browser.equalsIgnoreCase("SAFARI"))
@@ -362,12 +360,14 @@ public class Lib
 		String buildName = getProperty("BuildName");
 		String resultDirectory = DriverScript.ResultFolderPath;
 		(new File(resultDirectory)).mkdir();
-		String imageDirectory = resultDirectory+"\\Image";
+		String imageDirectory = resultDirectory+File.separator+"Image";
+		//String imageDirectory = resultDirectory+"\\Image";
 		(new File(imageDirectory)).mkdir();
 		try
 		{ 
 			//Start try
-			String resultPath = resultDirectory + "\\"+"Result_"+ sTestCaseName+".html";
+			//String resultPath = resultDirectory + "\\"+"Result_"+ sTestCaseName+".html";
+			String resultPath = resultDirectory + File.separator+"Result_"+ sTestCaseName+".html";
 			FileWriter fstream = new FileWriter(resultPath);
 			BufferedWriter resultFile = new BufferedWriter(fstream);
 			resultFile.write ("<html>");
@@ -406,7 +406,7 @@ public class Lib
 	public void repoter(String strSatus,String strExpected,String strActual, String strMessage)
 	{
 		String buildName = getProperty("BuildName");
-		String imageDirectory = DriverScript.ResultFolderPath +"\\Image";
+		String imageDirectory = DriverScript.ResultFolderPath + File.separator + "Image";
 		String testCaseName = getProperty("TestCaseName");
 		String StartTime = getProperty("StartTime");
 		String TeststepCount = getProperty("TeststepCount");
@@ -420,10 +420,9 @@ public class Lib
 			Rectangle rectangle = new Rectangle(0, 0, screenSize.width, screenSize.height);
 			Robot robot = new Robot();
 			BufferedImage image = robot.createScreenCapture(rectangle);
-			String imagepath =imageDirectory + "\\"+ testCaseName+"_"+buildName+"_"+StartTime+"_"+TeststepCount + ".jpg";
+			String imagepath =imageDirectory + File.separator + testCaseName+"_"+buildName+"_"+StartTime+"_"+TeststepCount + ".jpg";
 			File file = new File(imagepath);
 			ImageIO.write(image, "jpg", file);
-			//			snapshotpath = "<a href=\"" + imagepath + "\">" + "Snapshot</a>";
 			snapshotpath = "<a href=\"" + getRelativePath(imagepath) + "\">" + "Snapshot</a>";
 
 			if (strSatus.equalsIgnoreCase("PASS"))// start if
@@ -467,7 +466,7 @@ public class Lib
 		try
 		{
 			// start try..
-			String resultPath = DriverScript.ResultFolderPath+"\\Result_"+testCaseName+".html";
+			String resultPath = DriverScript.ResultFolderPath + File.separator +"Result_"+testCaseName+".html";
 			FileWriter fstream = new FileWriter(resultPath,true);
 			BufferedWriter resultFile = new BufferedWriter(fstream);
 			resultFile.append("<tr>");
@@ -540,16 +539,13 @@ public class Lib
 		try
 		{
 			//start try
-			String resultPath = resultDirectory + "\\"+"Result_"+ testCaseName+".html";
+			String resultPath = resultDirectory + File.separator+"Result_"+ testCaseName+".html";
 			FileWriter fstream = new FileWriter(resultPath,true);
 			BufferedWriter resultFile = new BufferedWriter(fstream);
 			resultFile.append("</table>");
 			resultFile.append("<hr>");
 			resultFile.append("<table border='0' width='50%'>");
-			//			resultFile.append("<tr><td width='100%' colspan='2' bgcolor='#000000'><b><font face='Tahoma' size='2' color='#FFFFFF'>Test Case Details :</font></b></td></tr>");
 			resultFile.append("<tr><td width='100%' colspan='2' bgcolor='#000000'><b><font face='Tahoma' size='2' color='#FFFFFF'>Test Case Execution Details :</font></b></td></tr>");
-			//			resultFile.append("<tr><td width='45%' bgcolor='#FFFFDC'><b><font face='Tahoma' size='2'>Total Tests Passed</font></b></td><td width='55%' bgcolor='#FFFFDC'><font face='Tahoma' size='2'>" + int_Pass + "</td></tr>");
-			//			resultFile.append("<tr><td width='45%' bgcolor='#FFFFDC'><b><font face='Tahoma' size='2'>Total Tests Failed</font></b></td><td width='55%' bgcolor='#FFFFDC'><font face='Tahoma' size='2'>" + int_Fail + "</td></tr>");
 			resultFile.append("<tr><td width='45%' bgcolor='#FFFFDC'><b><font face='Tahoma' size='2'>Executed On (DD.MM.YYYY)</font></b></td><td width='55%' bgcolor= '#FFFFDC'><font face='Tahoma' size='2'>" + sDateFrom + "</td></tr>");
 			resultFile.append("<tr><td width='45%' bgcolor='#FFFFDC'><b><font face='Tahoma' size='2'>Start Time (HH:MM:SS)</font></b></td><td width='55%' bgcolor= '#FFFFDC'><font face='Tahoma' size='2'>" + sTimeFrom + "</td></tr>");
 			resultFile.append("<tr><td width='45%' bgcolor='#FFFFDC'><b><font face='Tahoma' size='2'>End Time (HH:MM:SS)</font></b></td><td width='55%' bgcolor= '#FFFFDC'><font face='Tahoma' size='2'>" + sTimeTo + "</td></tr>");
@@ -622,7 +618,7 @@ public class Lib
 				{
 					break;
 				}
-				resultFile=resultFolderPath+"\\"+testCaseNames[i]+".html";
+				resultFile=resultFolderPath + File.separator + testCaseNames[i]+".html";
 				tempTestName = testCaseNames[i].split("Result_");
 				//			}		
 
@@ -709,8 +705,6 @@ public class Lib
 		int TeststepCount = Integer.parseInt(getProperty("TeststepCount"));
 		try{
 			// start try..
-
-			//String resultPath = currentDirectory + "\\" + resultDirectory + "\\"+ testCaseName+"_"+buildName+"_"+StartTime+".html";
 			String resultPath =DriverScript.ConsolidateResultFile;
 			FileWriter fstream = new FileWriter(resultPath,true);
 			BufferedWriter resultFile = new BufferedWriter(fstream);
@@ -750,7 +744,6 @@ public class Lib
 		DateFormat displayTimeFormat = new SimpleDateFormat("HH:mm:ss");
 
 		Calendar cal = Calendar.getInstance();
-		//String StartTime = getProperty("StartTime");
 		String StartTime = getProperty("SuiteStartTime");
 		Date dFrom =null;
 		Date dTo = null;
@@ -1000,8 +993,6 @@ public class Lib
 				String overAllPassPerc=sub1[0].substring(lastindex+1, lastindex+size);
 				sFinalStatus[1]=overAllPassPerc;
 			}
-
-
 			//Close the input stream
 			dis.close();
 		}
@@ -1021,16 +1012,19 @@ public class Lib
 	public String  getRelativePath (String sFilePath)
 	{
 
-		//def sFilePath = filePath.toString();
 		String [] tempPathElement;
 		String sRelativePath="./";
 		String fileRelativePath = null;
-		tempPathElement= sFilePath.split("\\\\");
+		try{
+		tempPathElement= sFilePath.split(File.separator+File.separator);
 		for(int i=(tempPathElement.length-2);i<(tempPathElement.length);i++)
 		{
-			sRelativePath=sRelativePath+"\\"+tempPathElement[i];
+			sRelativePath=sRelativePath+File.separator+tempPathElement[i];
 		}
 		fileRelativePath = new File(sRelativePath).toString();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return fileRelativePath;
 
 	}
@@ -1053,17 +1047,15 @@ public class Lib
 		{
 			sProjectPath = Method_GetProjectLocation();
 			// ** creating the "Results Folder"
-			sResultFolder = sProjectPath +"\\Results";
+			sResultFolder = sProjectPath + File.separator + "Results";
 			File oCreateResultFolder = new File(sResultFolder);
 			oCreateResultFolder.mkdir();
 
 			// get the test suite name
-			//sTestSuiteName = testRunner.testCase.testSuite.name
 			sTestSuiteName=	getProperty("SuiteName");
 
 			// ** Suite Name reult Folder
-			//def sOutputFolder1 = sResultFolder + "\\" + sTestSuiteName
-			sOutputFolder = sResultFolder + "\\" + sTestSuiteName;
+			sOutputFolder = sResultFolder + File.separator + sTestSuiteName;
 			oCreateFolder = new File(sOutputFolder);
 			oCreateFolder.mkdir();
 
@@ -1075,11 +1067,11 @@ public class Lib
 			SimpleDateFormat oCurrentDateFormat = new java.text.SimpleDateFormat("dd-MM-yyyy");
 			String dShortDate = oDateFormat.format(dTodayDate);
 			String dCurrentDate = (String) (oCurrentDateFormat).format(dTodayDate);
-			String sTempFolder = sOutputFolder + "\\"+ dCurrentDate.toString();
-			File oCreateDateFolder =  new File(sOutputFolder+ "\\"+dCurrentDate.toString());
+			String sTempFolder = sOutputFolder + File.separator+ dCurrentDate.toString();
+			File oCreateDateFolder =  new File(sOutputFolder + File.separator + dCurrentDate.toString());
 			oCreateDateFolder.mkdir();
-			sConsolidateResultFileName = sOutputFolder +  "\\" + dCurrentDate.toString() + "\\ConsolidateReport_" + dShortDate.toString() + ".html";
-			sOutputFolder = sTempFolder + "\\" + dShortDate.toString();
+			sConsolidateResultFileName = sOutputFolder +  File.separator + dCurrentDate.toString() + File.separator + "ConsolidateReport_" + dShortDate.toString() + ".html";
+			sOutputFolder = sTempFolder + File.separator + dShortDate.toString();
 			oCreateFolder = new File(sOutputFolder);
 			oCreateFolder.mkdir();
 			sOpvar = sOutputFolder;
@@ -1127,7 +1119,7 @@ public class Lib
 			sObjLogicalName=sTemp[1];
 
 			String sProjectLocation=Method_GetProjectLocation();
-			String ObjectSheetPath1=sProjectLocation+"\\Object\\Object.xls";
+			String ObjectSheetPath1=sProjectLocation + File.separator + "Object"+ File.separator + "Object.xls";
 			Workbook workbook = Workbook.getWorkbook(new File(ObjectSheetPath1));
 			Sheet sheet = workbook.getSheet(sSheetName);
 			rowcount=sheet.getRows();
@@ -1180,7 +1172,7 @@ public class Lib
 		String sProperty = null;
 		Properties properties = new Properties();
 		InputStream inputFile = null;
-		String sConfigLocation = currentDirectory+"\\Properties\\Properties.properties";
+		String sConfigLocation = currentDirectory + File.separator + "Properties" + File.separator + "Properties.properties";
 		try {//Start try
 			inputFile = new FileInputStream(sConfigLocation);
 			properties.load(inputFile);
@@ -1205,7 +1197,7 @@ public class Lib
 		Properties properties = new Properties();
 		InputStream inputFile = null;
 		OutputStream outputFile = null;
-		String sConfigLocation = currentDirectory+"\\Properties\\Properties.properties";
+		String sConfigLocation = currentDirectory + File.separator + "Properties" + File.separator + "Properties.properties";
 		try {//Start try
 			inputFile = new FileInputStream(sConfigLocation);
 			properties.load(inputFile);

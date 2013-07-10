@@ -38,7 +38,7 @@ public class DriverScript {
 			oLib.setProperty("FailCount","0");
 			sSuiteName=oLib.getProperty("SuiteName");
 			sProjectLocation=oLib.Method_GetProjectLocation();
-			sCompleteSuitePath=sProjectLocation+"\\Suite\\"+sSuiteName+".xls";
+			sCompleteSuitePath=sProjectLocation + File.separator + "Suite" + File.separator + sSuiteName+".xls";
 			Workbook wSuitWorkbook = Workbook.getWorkbook(new File(sCompleteSuitePath));
 			Sheet shSuitSheet = wSuitWorkbook.getSheet(0);
 			iSuitRowCount=shSuitSheet.getRows();
@@ -53,7 +53,7 @@ public class DriverScript {
 				{
 					oLib.setProperty("TestCaseName", sTestCaseName);
 					oLib.OpenFile();
-					sTestCaseFilePath=sProjectLocation+"\\Test Case\\"+sTestCaseName+".xls";
+					sTestCaseFilePath=sProjectLocation + File.separator + "Test Case" + File.separator + sTestCaseName+".xls";
 					Workbook wTestCaseWorkbook = Workbook.getWorkbook(new File(sTestCaseFilePath));
 					Sheet shTestCaseSheet = wTestCaseWorkbook.getSheet(0);
 					iTestCaseRowcount=shTestCaseSheet.getRows();
