@@ -49,17 +49,8 @@ import org.openqa.selenium.safari.SafariDriver;
  */
 public class Lib 
 {
-	public static BufferedWriter wr;
-	public static String newdetresultsfile = null;
-	public static String newdetresultsfile1 = null;
-	public static BufferedWriter wr1;
-	public static String loc;
-	public static String locURL;
-	public static String locIndex;
-	public static String flownamevar;
-	public static String flowPageLoadNamevar;
+
 	public static WebDriver driver;
-	public String message=" ";
 	int int_Pass  = 0;
 	int int_Fail = 0;
 	int testcasetotal = 0;
