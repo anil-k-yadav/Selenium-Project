@@ -120,11 +120,9 @@ public class Lib
 		//port=portNum;
 		try
 		{
-
 			Lib.driver.quit();
 			opvar="Pass";
 			ret_mess="Successfully closed the URL ";
-
 		}
 		catch(Exception e)
 		{
@@ -141,7 +139,6 @@ public class Lib
 	{
 		String opvar="Pass";
 		String message="";
-
 		try
 		{
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -163,8 +160,30 @@ public class Lib
 	public void Method_ObjectClick(String sObjlogicalname)
 	{
 		String opvar;
-
 		WebElement element = getWebElement(sObjlogicalname);
+		String message;	
+		try
+		{
+			element.click();
+			opvar="Pass";
+			message = sObjlogicalname +" is clicked sucessfully";
+		}
+		catch (Exception e)
+		{
+			opvar="fail";
+			message = sObjlogicalname +" was not clicked:::Some exception has occured"+ e.getMessage();     
+		}
+		repoter(opvar, "NA", "NA", message);
+	}
+
+	/**
+	 * This method is used to click on an object
+	 * @param sObjlogicalname
+	 */
+	public void Method_ObjectClick(String sObjlogicalname, String sData)
+	{
+		String opvar;
+		WebElement element = getWebElementDynamic(sObjlogicalname, sData);
 		String message;	
 		try
 		{
@@ -272,7 +291,8 @@ public class Lib
 	 * @param sData
 	 * @return
 	 */
-	public boolean Method_verifyText (String objlogicalname,String sData){
+	public boolean Method_verifyText (String objlogicalname,String sData)
+	{
 		boolean bStatus = false;
 		String opvar="FAIL";
 		String message=null;
@@ -296,10 +316,10 @@ public class Lib
 			message = "Method_verifyText:::Some exception has occured:::" +  e.toString(); 
 		}
 		repoter(opvar, sData, sActualText, message);
-		
+
 		return bStatus;
 	}
-	
+
 	/**
 	 * This method is used to retrieve web elements from application 
 	 * using element type and property
@@ -334,12 +354,160 @@ public class Lib
 		}
 		catch (Exception e)
 		{
-			System.out.println("getWebElement:::Some exception has occured:::"+e.toString());
+			repoter("Fail", "NA", "NA", "Some exception has occured in fetching web element:::"+e.toString());
 		}
 		return element;
 	}
 
-	
+	/**
+	 * This method is used to retrieve web elements from application with dynamic properties
+	 * using element type and property
+	 * @param objlogicalname
+	 * @return WebElement
+	 */
+	public WebElement getWebElementDynamic(String sObjlogicalname, String sData)
+	{
+		String [] objectType; 
+		String sObjectType;
+
+		objectType=Method_GetObjectfromExcel(sObjlogicalname);
+		sObjectType=objectType[1];
+		String sObjectProperty=objectType[0];
+		if(sObjectProperty.equals(ScriptConstants.OBJECT_PROPERTY_DYNAMIC)){
+			sObjectProperty=sData;
+		}
+		WebElement element=null;
+		try
+		{
+			switch(sObjectType)
+			{
+			case "css" :  sObjectType = "css";
+			element=driver.findElement(By.cssSelector(sObjectProperty));
+			break;
+			case "id":  sObjectType = "id";
+			element=driver.findElement(By.id(sObjectProperty));
+			break;
+			case "xpath":  sObjectType = "xpath";
+			element=driver.findElement(By.xpath(sObjectProperty));
+			break;
+			case "link": sObjectType = "link";
+			element=driver.findElement(By.linkText(sObjectProperty));
+			}
+		}
+		catch (Exception e)
+		{
+			repoter("Fail", "NA", "NA", "Some exception has occured in fetching web element:::"+e.toString());
+		}
+		return element;
+	}
+
+	/**
+	 * This method is used to verify that a tab is selected.
+	 * @param objlogicalname
+	 */
+	public void Method_verifyTabActive (String objlogicalname)
+	{
+		String opvar="FAIL";
+		String message=null;
+		String sActualText=null;
+
+		WebElement element = getWebElement(objlogicalname);
+		try
+		{
+			sActualText = element.getAttribute("class");
+			if(sActualText.equals("active")){
+				opvar="PASS";
+				message = objlogicalname + " is active on the screen";
+			}else{
+				opvar="FAIL";
+				message =  objlogicalname + " is not active on the screen";
+			}
+		}
+		catch (Exception e)
+		{
+			opvar="FAIL";
+			message = "Method_verifyTabActive:::Some exception has occured:::" +  e.toString(); 
+		}
+		repoter(opvar, "NA", "NA", message);
+	}
+
+	/**
+	 * This method is used to verify that a tab is selected based on link provided as data argument.
+	 * @param objlogicalname
+	 * @param sData
+	 */
+	public void Method_verifyTabActive (String objlogicalname, String sData)
+	{
+		String opvar="FAIL";
+		String message=null;
+		String sActualText=null;
+
+		WebElement element = getWebElementDynamic(objlogicalname,sData);
+		try
+		{
+			sActualText = element.getAttribute("class");
+			if(sActualText.equals("active")){
+				opvar="PASS";
+				message = objlogicalname + " is active on the screen";
+			}else{
+				opvar="FAIL";
+				message =  objlogicalname + " is not active on the screen";
+			}
+		}
+		catch (Exception e)
+		{
+			opvar="FAIL";
+			message = "Method_verifyTabActive:::Some exception has occured:::" +  e.toString(); 
+		}
+		repoter(opvar, "NA", "NA", message);
+	}
+
+	/**
+	 * This method is used to store value in property file to Property01
+	 * @param sData
+	 */
+	public void Method_Store_Property01 (String sData)
+	{
+		String opvar="FAIL";
+		String message=null;
+		try
+		{
+			setProperty("Property01", sData);
+			opvar="PASS";
+			message = "Sucessfully stored "+ sData + " in Property01";
+		}
+		catch (Exception e)
+		{
+			opvar="FAIL";
+			message = "Some exception has occured in storing "+ sData + " in Property01:::" +  e.toString(); 
+		}
+		repoter(opvar, "NA", "NA", message);
+	}
+
+	/**
+	 * This method is used to read value from property file of Property01
+	 * @param sData
+	 */
+	public String Method_Read_Property01 (String sData)
+	{
+		String opvar="FAIL";
+		String message=null;
+		String sReturnValue=null;
+		try
+		{
+			sReturnValue = getProperty("Property01");
+			opvar="PASS";
+			message = "Sucessfully read value from Property01. Value is "+sReturnValue;
+		}
+		catch (Exception e)
+		{
+			opvar="FAIL";
+			message = "Some exception has occured in storing "+ sData + " in Property01:::" +  e.toString(); 
+		}
+		repoter(opvar, "NA", "NA", message);
+		return sReturnValue;
+	}
+
 	//	*****************************************************************************************************************************
 	//	This section is for Reporting related methods
 	//	*****************************************************************************************************************************
@@ -970,28 +1138,33 @@ public class Lib
 			while ((strLine = br.readLine()) != null) 
 			{
 				temp=strLine.indexOf("Test Case Execution Details :");
-				if(strLine.indexOf("Fail")<temp)
+				if(temp>-1)
+				{
+					if(strLine.indexOf("Fail")<temp)
+					{
+						sStatus = "FAIL";
+						sFinalStatus[0]=sStatus;
+					}
+					else if (sStatus.equals("PASS"))
+					{
+						sFinalStatus[0]=sStatus;
+					}			
+					String [] sub1;
+					line2=strLine.split("Total Steps Passed");
+
+					line3=line2[1].split(":");
+					sub1=line3[1].split("%");
+					int stotallength=sub1[0].length();
+					int lastindex=sub1[0].lastIndexOf(">");
+					int size=stotallength-lastindex;
+					String overAllPassPerc=sub1[0].substring(lastindex+1, lastindex+size);
+					sFinalStatus[1]=overAllPassPerc;
+				}else if(strLine.indexOf("Fail")<temp)
 				{
 					sStatus = "FAIL";
 					sFinalStatus[0]=sStatus;
 				}
-				else
-				{
-					sStatus = "PASS";
-					sFinalStatus[0]=sStatus;
 
-				}			
-
-				String [] sub1;
-				line2=strLine.split("Total Steps Passed");
-
-				line3=line2[1].split(":");
-				sub1=line3[1].split("%");
-				int stotallength=sub1[0].length();
-				int lastindex=sub1[0].lastIndexOf(">");
-				int size=stotallength-lastindex;
-				String overAllPassPerc=sub1[0].substring(lastindex+1, lastindex+size);
-				sFinalStatus[1]=overAllPassPerc;
 			}
 			//Close the input stream
 			dis.close();
@@ -1016,12 +1189,12 @@ public class Lib
 		String sRelativePath="./";
 		String fileRelativePath = null;
 		try{
-		tempPathElement= sFilePath.split(File.separator+File.separator);
-		for(int i=(tempPathElement.length-2);i<(tempPathElement.length);i++)
-		{
-			sRelativePath=sRelativePath+File.separator+tempPathElement[i];
-		}
-		fileRelativePath = new File(sRelativePath).toString();
+			tempPathElement= sFilePath.split(File.separator+File.separator);
+			for(int i=(tempPathElement.length-2);i<(tempPathElement.length);i++)
+			{
+				sRelativePath=sRelativePath+File.separator+tempPathElement[i];
+			}
+			fileRelativePath = new File(sRelativePath).toString();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -1079,7 +1252,7 @@ public class Lib
 			DriverScript.ResultFolderPath=sOpvar;
 			DriverScript.ConsolidateResultFile=sConsolidateResultFileName;
 			DriverScript.ConsolidatePath=sTempFolder;
-			
+
 			// ** Setting suite start time in properties
 			DateFormat timeFormat = new SimpleDateFormat("ddMMYYYY HHmmss");
 			String StartTime =timeFormat.format(dTodayDate);
@@ -1094,7 +1267,6 @@ public class Lib
 
 	}
 
-	
 	//	*****************************************************************************************************************************
 	//	This section is for some generic methods used by different methods
 	//	*****************************************************************************************************************************
@@ -1123,16 +1295,16 @@ public class Lib
 			Workbook workbook = Workbook.getWorkbook(new File(ObjectSheetPath1));
 			Sheet sheet = workbook.getSheet(sSheetName);
 			rowcount=sheet.getRows();
-			for(int i=0; i<rowcount;i++)
+			for(int rowCounter=0; rowCounter<rowcount;rowCounter++)
 			{
-				Cell a2 = sheet.getCell(0,i); 
-				String rowval = a2.getContents();
+				Cell cObjectLogicalName = sheet.getCell(ScriptConstants.OBJECT_LOGICALNAME_COL_NUM,rowCounter); 
+				String rowval = cObjectLogicalName.getContents();
 				count++;
 				if(sObjLogicalName.equalsIgnoreCase(rowval) && count<=rowcount)
 				{
-					Cell propertyCell = sheet.getCell(ScriptConstants.OBJECT_PROPERTY_COL_NUM,i); 
+					Cell propertyCell = sheet.getCell(ScriptConstants.OBJECT_PROPERTY_COL_NUM,rowCounter); 
 					sObjType[0] = propertyCell.getContents();
-					Cell typeCell = sheet.getCell(ScriptConstants.OBJECT_TYPE_COL_NUM,i); 
+					Cell typeCell = sheet.getCell(ScriptConstants.OBJECT_TYPE_COL_NUM,rowCounter); 
 					sObjType[1] = typeCell.getContents();
 					break;
 				}
